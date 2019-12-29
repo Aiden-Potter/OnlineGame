@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/Scenes/1.unity
+- path: Assets/8GUI/8LoginPanel.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
