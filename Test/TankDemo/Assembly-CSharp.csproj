@@ -69,9 +69,11 @@
     <Compile Include="Assets\8GUI\HelloWorld.cs" />
     <Compile Include="Assets\8GUI\LoginPanel.cs" />
     <Compile Include="Assets\9Scene\ChangeScene.cs" />
+    <Compile Include="Assets\CameraFollow.cs" />
     <Compile Include="Assets\Scenes.cs" />
     <Compile Include="Assets\Scripts\news.cs" />
     <Compile Include="Assets\Scripts\waht.cs" />
+    <Compile Include="Assets\TankController.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/GitHub/Repository/OnlineGame/Test/TankDemo/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
