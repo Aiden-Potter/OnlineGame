@@ -6,13 +6,13 @@ public class CameraFollow : MonoBehaviour
 {
     public float distance = 15.0f;
     [Header("Angle")]
-    public float rot = 0;
+    public float rot = 90f * Mathf.PI * 2 / 360;
     public float roll = 30f * Mathf.PI * 2 / 360;
     public float rotSpeed=0.2f;
     public float rollSpeed = 0.3f;
     private GameObject target;
     private float maxRoll = 70.0f * Mathf.PI / 180;
-    private float minRoll = -10.0f * Mathf.PI / 180;
+    private float minRoll = -20.0f * Mathf.PI / 180;
 
     public float maxDistance = 22.0f;
     public float minDistance = 5.0f;
@@ -69,9 +69,9 @@ public class CameraFollow : MonoBehaviour
     void Zoom()
     {
         float d = Input.GetAxis("Mouse ScrollWheel");
-        if (d > 0&&distance<maxDistance)
+        if (d > 0&&distance > minDistance)
             distance -= zoomSpeed;
-        if (d < 0&&distance>minDistance) 
+        else if (d < 0&&distance < maxDistance) 
             distance += zoomSpeed;
 
     }
