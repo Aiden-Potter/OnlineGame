@@ -5,6 +5,10 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
     public float distance = 15.0f;
+    public float maxDistance = 22.0f;
+    public float minDistance = 5.0f;
+
+    public float zoomSpeed = 0.2f;
     [Header("Angle")]
     public float rot = 90f * Mathf.PI * 2 / 360;
     public float roll = 30f * Mathf.PI * 2 / 360;
@@ -12,12 +16,9 @@ public class CameraFollow : MonoBehaviour
     public float rollSpeed = 0.3f;
     private GameObject target;
     private float maxRoll = 70.0f * Mathf.PI / 180;
-    private float minRoll = -20.0f * Mathf.PI / 180;
+    private float minRoll = -5.0f * Mathf.PI / 180;
 
-    public float maxDistance = 22.0f;
-    public float minDistance = 5.0f;
-
-    public float zoomSpeed = 0.2f;
+    
     void Start()
     {
         SetTarget(GameObject.Find("Tank"));

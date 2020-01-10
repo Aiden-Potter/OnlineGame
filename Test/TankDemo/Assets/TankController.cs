@@ -14,7 +14,7 @@ public class TankController : MonoBehaviour
     public float gunRotTarget;
     public float gunRotSpeed=0.5f;
 
-    private float maxRoll = 4.0f;
+    private float maxRoll = 5.0f;
     private float minRoll =-10.0f;
     void Start()
     {
@@ -27,8 +27,10 @@ public class TankController : MonoBehaviour
         move();
 
         turretRotTarget = Camera.main.transform.eulerAngles.y;
-        gunRotTarget = Camera.main.transform.eulerAngles.x;
-       // TurretRotation();
+       
+
+       // gunRotTarget = Camera.main.transform.eulerAngles.x;
+        TurretRotation();
         GunRotation();
     }
 
@@ -61,11 +63,16 @@ public class TankController : MonoBehaviour
             return;
         if (Camera.main == null)
             return;
+        //Vector3 worldEuler = gun.eulerAngles;
+      
+
         Vector3 worldEuler = gun.eulerAngles;
         Vector3 localEuler = gun.localEulerAngles;
-        worldEuler.x = gunRotTarget;
-        gun.eulerAngles = worldEuler;//用世界坐标系去计算炮管转到的位置
-
+        if (Input.GetKey(KeyCode.I))
+            worldEuler.x += gunRotSpeed;
+        if (Input.GetKey(KeyCode.O))
+            worldEuler.x -= gunRotSpeed;//按键冲突？
+        gun.eulerAngles = worldEuler;
         Vector3 euler = gun.localEulerAngles;
         if (euler.x > 180)//世界坐标系下euler怎么转是正的
             euler.x -= 360;
@@ -74,5 +81,6 @@ public class TankController : MonoBehaviour
         if (euler.x < minRoll)
             euler.x = minRoll;
         gun.localEulerAngles = new Vector3(euler.x, localEuler.y, localEuler.z);
+
     }
 }
