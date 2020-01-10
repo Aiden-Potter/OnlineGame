@@ -71,6 +71,7 @@
     <Compile Include="Assets\9Scene\ChangeScene.cs" />
     <Compile Include="Assets\CameraFollow.cs" />
     <Compile Include="Assets\Scenes.cs" />
+    <Compile Include="Assets\Scripts\AxleInfo.cs" />
     <Compile Include="Assets\Scripts\news.cs" />
     <Compile Include="Assets\Scripts\waht.cs" />
     <Compile Include="Assets\TankController.cs" />
