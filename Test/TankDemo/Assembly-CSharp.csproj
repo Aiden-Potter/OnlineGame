@@ -63,18 +63,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\1MovingCube\Test.cs" />
-    <Compile Include="Assets\6Prefab\PrefabCreate.cs" />
-    <Compile Include="Assets\7Sound\SoundPlayer.cs" />
-    <Compile Include="Assets\8GUI\HelloWorld.cs" />
-    <Compile Include="Assets\8GUI\LoginPanel.cs" />
-    <Compile Include="Assets\9Scene\ChangeScene.cs" />
-    <Compile Include="Assets\CameraFollow.cs" />
-    <Compile Include="Assets\Scenes.cs" />
+    <Compile Include="Assets\Example\1MovingCube\Test.cs" />
+    <Compile Include="Assets\Example\6Prefab\PrefabCreate.cs" />
+    <Compile Include="Assets\Example\7Sound\SoundPlayer.cs" />
+    <Compile Include="Assets\Example\8GUI\HelloWorld.cs" />
+    <Compile Include="Assets\Example\8GUI\LoginPanel.cs" />
+    <Compile Include="Assets\Example\9Scene\ChangeScene.cs" />
     <Compile Include="Assets\Scripts\AxleInfo.cs" />
+    <Compile Include="Assets\Scripts\CameraFollow.cs" />
     <Compile Include="Assets\Scripts\news.cs" />
+    <Compile Include="Assets\Scripts\Scenes.cs" />
+    <Compile Include="Assets\Scripts\TankController.cs" />
+    <Compile Include="Assets\Scripts\TankControllerMotor.cs" />
     <Compile Include="Assets\Scripts\waht.cs" />
-    <Compile Include="Assets\TankController.cs" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>D:/GitHub/Repository/OnlineGame/Test/TankDemo/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
