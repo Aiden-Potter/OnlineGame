@@ -785,8 +785,32 @@ VisualEffectResource:
       = index;\r\n\r\n\t\toutputBuffer[id] = kvp;\r\n\t}\r\n}\r\n"
   m_Infos:
     m_Expressions:
-      m_Expressions: []
-      m_NeedsLocalToWorld: 0
+      m_Expressions:
+      - op: 1
+        valueIndex: 0
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 3
+      - op: 1
+        valueIndex: 3
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 3
+      - op: 1
+        valueIndex: 6
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: 7
+      - op: 9
+        valueIndex: 7
+        data[0]: -1
+        data[1]: -1
+        data[2]: -1
+        data[3]: -1
+      m_NeedsLocalToWorld: 1
       m_NeedsWorldToLocal: 0
       m_NeededMainCameraBuffers: 0
     m_PropertySheet:
@@ -795,7 +819,11 @@ VisualEffectResource:
       m_Vector2f:
         m_Array: []
       m_Vector3f:
-        m_Array: []
+        m_Array:
+        - m_ExpressionIndex: 0
+          m_Value: {x: 0, y: 0, z: 0}
+        - m_ExpressionIndex: 1
+          m_Value: {x: 1, y: 1, z: 1}
       m_Vector4f:
         m_Array: []
       m_Uint:
@@ -809,14 +837,70 @@ VisualEffectResource:
       m_Gradient:
         m_Array: []
       m_NamedObject:
-        m_Array: []
+        m_Array:
+        - m_ExpressionIndex: 2
+          m_Value: {fileID: 0}
       m_Bool:
         m_Array: []
     m_ExposedExpressions: []
-    m_Buffers: []
+    m_Buffers:
+    - type: 1
+      size: 1
+      layout:
+      - name: spawnCount
+        type: 1
+        offset:
+          bucket: 0
+          structure: 1
+          element: 0
+      capacity: 1
+      stride: 4
+    - type: 4
+      size: 128
+      layout: []
+      capacity: 0
+      stride: 4
+    - type: 0
+      size: 128
+      layout: []
+      capacity: 0
+      stride: 8
+    - type: 0
+      size: 128
+      layout: []
+      capacity: 0
+      stride: 8
     m_TemporaryBuffers: []
-    m_CPUBuffers: []
-    m_Events: []
+    m_CPUBuffers:
+    - capacity: 1
+      stride: 1
+      layout:
+      - name: spawnCount
+        type: 1
+        offset:
+          bucket: 0
+          structure: 1
+          element: 0
+      initialData:
+        data: 00000000
+    - capacity: 1
+      stride: 1
+      layout:
+      - name: spawnCount
+        type: 1
+        offset:
+          bucket: 0
+          structure: 1
+          element: 0
+      initialData:
+        data: 00000000
+    m_Events:
+    - name: OnPlay
+      playSystems: 00000000
+      stopSystems: 
+    - name: OnStop
+      playSystems: 
+      stopSystems: 00000000
     m_RuntimeVersion: 10
     m_RendererSettings:
       motionVectorGenerationMode: 0
@@ -828,4 +912,84 @@ VisualEffectResource:
     m_UpdateMode: 0
     m_PreWarmDeltaTime: 0.05
     m_PreWarmStepCount: 0
-  m_Systems: []
+  m_Systems:
+  - type: 0
+    flags: 0
+    capacity: 0
+    layer: 4294967295
+    buffers:
+    - nameId: spawner_output
+      index: 1
+    values: []
+    tasks: []
+  - type: 1
+    flags: 2
+    capacity: 128
+    layer: 4294967295
+    buffers:
+    - nameId: sourceAttributeBuffer
+      index: 0
+    - nameId: spawner_input
+      index: 1
+    - nameId: indirectBuffer
+      index: 1
+    - nameId: sortBufferA
+      index: 2
+    - nameId: sortBufferB
+      index: 3
+    values:
+    - nameId: bounds_center
+      index: 0
+    - nameId: bounds_size
+      index: 1
+    tasks:
+    - type: 536870912
+      buffers:
+      - nameId: sourceAttributeBuffer
+        index: 0
+      temporaryBuffers: []
+      values: []
+      params:
+      - nameId: bounds_center
+        index: 0
+      - nameId: bounds_size
+        index: 1
+      processor: {fileID: 0}
+      shaderSourceIndex: 0
+    - type: 805306368
+      buffers:
+      - nameId: indirectBuffer
+        index: 1
+      temporaryBuffers: []
+      values: []
+      params: []
+      processor: {fileID: 0}
+      shaderSourceIndex: 1
+    - type: 805306369
+      buffers:
+      - nameId: inputBuffer
+        index: 1
+      - nameId: outputBuffer
+        index: 2
+      temporaryBuffers: []
+      values:
+      - nameId: localToWorld
+        index: 3
+      params: []
+      processor: {fileID: 0}
+      shaderSourceIndex: 3
+    - type: 1073741826
+      buffers:
+      - nameId: indirectBuffer
+        index: 1
+      temporaryBuffers: []
+      values:
+      - nameId: mainTexture
+        index: 2
+      params:
+      - nameId: sortPriority
+        index: 0
+      - nameId: indirectDraw
+        index: 1
+      processor: {fileID: 0}
+      shaderSourceIndex: 2
