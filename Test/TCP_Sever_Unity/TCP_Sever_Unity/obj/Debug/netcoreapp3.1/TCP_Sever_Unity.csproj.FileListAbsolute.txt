@@ -1,0 +1,11 @@
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.exe
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.deps.json
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.runtimeconfig.json
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.runtimeconfig.dev.json
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.dll
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\bin\Debug\netcoreapp3.1\TCP_Sever_Unity.pdb
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\obj\Debug\netcoreapp3.1\TCP_Sever_Unity.csprojAssemblyReference.cache
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\obj\Debug\netcoreapp3.1\TCP_Sever_Unity.AssemblyInfoInputs.cache
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\obj\Debug\netcoreapp3.1\TCP_Sever_Unity.AssemblyInfo.cs
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\obj\Debug\netcoreapp3.1\TCP_Sever_Unity.dll
+D:\vsfile\TCP_Sever_Unity\TCP_Sever_Unity\obj\Debug\netcoreapp3.1\TCP_Sever_Unity.pdb
