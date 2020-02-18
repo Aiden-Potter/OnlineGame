@@ -12,13 +12,12 @@ public enum CtrlType
 public class TankControllerMotor : MonoBehaviour
 {
     public List<AXleInfo> axleInfos;
+
     public CtrlType ctrlType = CtrlType.player;
     private float motor = 0;
     public float maxMotorTorque;
-
     private float brakeTorque = 0;
     public float maxBrakeTorque = 100;
-
     private float steering = 0;
     public float maxSteeringAngle;
     public Transform turret;
@@ -30,9 +29,9 @@ public class TankControllerMotor : MonoBehaviour
     public Rigidbody rigidbody;
     public AudioSource motorAudioSource;
     public AudioClip motorClip;
+    [Header("旋转位置信息")]
     public float turretRotTarget;
     public float turretRotSpeed = 0.5f;
-
     public float gunRotTarget;
     public float gunRotSpeed = 0.5f;
 
@@ -41,8 +40,11 @@ public class TankControllerMotor : MonoBehaviour
     public float hp = 100f;
     private float maxHp = 100f;
     public GameObject destoryEffect;
-    private float maxRoll = 5.0f;
-    private float minRoll = -10.0f;
+    public Texture2D centerSight;
+    public Texture2D tankSight;
+
+    private float maxRoll = 10.0f;
+    private float minRoll = -15.0f;
     void Start()
     {
         turret = transform.Find("turret");
@@ -66,7 +68,13 @@ public class TankControllerMotor : MonoBehaviour
         GunRotation();
     }
 
-
+    private void OnGUI()
+    {
+        if(ctrlType != CtrlType.player)
+        { return; }
+        DrawSight();
+        //GUI.DrawTexture(new Rect(0, 0, tankSight.width, tankSight.height), tankSight);图的锚点在左上角
+    }
 
     void TurretRotation()
     {
@@ -92,10 +100,12 @@ public class TankControllerMotor : MonoBehaviour
 
         Vector3 worldEuler = gun.eulerAngles;
         Vector3 localEuler = gun.localEulerAngles;
-        if (Input.GetKey(KeyCode.Q))
-            worldEuler.x += gunRotSpeed;
-        if (Input.GetKey(KeyCode.E))
-            worldEuler.x -= gunRotSpeed;//按键冲突？
+        //if (Input.GetKey(KeyCode.Q))
+        //    worldEuler.x += gunRotSpeed;
+        //if (Input.GetKey(KeyCode.E))
+        //    worldEuler.x -= gunRotSpeed;//按键冲突？
+        worldEuler.x = gunRotTarget;
+
         gun.eulerAngles = worldEuler;
         Vector3 euler = gun.localEulerAngles;
         if (euler.x > 180)//localEulerAngles一直减过了0会变成360
@@ -128,7 +138,10 @@ public class TankControllerMotor : MonoBehaviour
                 brakeTorque = maxBrakeTorque;
         }
 
-        turretRotTarget = Camera.main.transform.eulerAngles.y;
+        //turretRotTarget = Camera.main.transform.eulerAngles.y;
+        //gunRotTarget = Camera.main.transform.eulerAngles.x;
+        TargetSignPos();
+
     }
     public void Accerlerate()
     {
@@ -207,5 +220,80 @@ public class TankControllerMotor : MonoBehaviour
             destoryOgbj.transform.localPosition = Vector3.zero;
             ctrlType = CtrlType.none;
         }
+    }
+
+    public void TargetSignPos()
+    {
+        //碰撞信息和碰撞点
+        Vector3 hitPoint = Vector3.zero;
+        RaycastHit raycastHit;
+        Vector3 centerVec = new Vector3(Screen.width / 2, Screen.height *2/ 3, 0);
+        Ray ray = Camera.main.ScreenPointToRay(centerVec);//摄像机往屏幕中心放出射线
+        //Debug.DrawRay(Camera.main.transform.position,)
+        if (Physics.Raycast(ray, out raycastHit,400f))
+        {
+            //true got something
+            hitPoint = raycastHit.point;
+        }
+        else
+        {
+            //false get 400m point on the ray
+            hitPoint = ray.GetPoint(400);
+        }
+
+        Vector3 dir = hitPoint - turret.position;
+        Quaternion angle = Quaternion.LookRotation(dir);
+
+        turretRotTarget = angle.eulerAngles.y;
+        gunRotTarget = angle.eulerAngles.x;
+        Debug.Log(gunRotTarget);
+        //Debug part
+        //Transform targetCube = GameObject.Find("TargetCube").transform;
+        //targetCube.position = hitPoint;
+    }
+    /// <summary>
+    /// 计算实际爆炸位置
+    /// </summary>
+    /// <returns></returns>
+    public Vector3 CalExplodePoint()
+    {
+        Vector3 hitPoint = Vector3.zero;
+
+        RaycastHit raycastHit;
+        Vector3 pos = gun.position + gun.forward * 5;
+        Ray ray = new Ray(pos, gun.forward);
+
+
+        Debug.DrawRay(pos, gun.forward,Color.red);
+
+
+        if (Physics.Raycast(ray, out raycastHit, 400f))
+        {
+            //true got something
+            hitPoint = raycastHit.point;
+        }
+        else
+        {
+            //false get 400m point on the ray
+            hitPoint = ray.GetPoint(400);
+        }
+        //Transform explodeCude = GameObject.Find("ExplodeCube").transform;
+        //explodeCude.position = hitPoint;
+        return hitPoint; 
+    }
+
+    public void DrawSight()
+    {
+        //实际的射击位置
+        Vector3 explodePoint = CalExplodePoint();//处理Rect的锚点
+        Vector3 screenPoint = Camera.main.WorldToScreenPoint(explodePoint);
+        Rect tankRect = new Rect(screenPoint.x - tankSight.width / 2,
+            Screen.height - screenPoint.y - tankSight.height/2,
+            tankSight.width, tankSight.height);
+        GUI.DrawTexture(tankRect, tankSight);//drawGUI的锚点在
+        Rect centerRect = new Rect(Screen.width/2 - centerSight.width / 2,
+           Screen.height*1/3  - centerSight.height / 2,
+           centerSight.width, centerSight.height);
+        GUI.DrawTexture(centerRect, centerSight);
     }
 }
