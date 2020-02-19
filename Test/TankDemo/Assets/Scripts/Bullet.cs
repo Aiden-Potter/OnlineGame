@@ -8,7 +8,8 @@ public class Bullet : MonoBehaviour
     public GameObject explode;
     public float maxLifeTime = 2f;
     public float instantiateTime = 0f;
-
+    public GameObject attackTank;
+    public AudioClip explodeClip;
     void Start()
     {
         instantiateTime = Time.time;    
@@ -28,15 +29,18 @@ public class Bullet : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Boom!!");
-        Instantiate(explode, transform.position,Quaternion.identity);
+        GameObject explodeObj = Instantiate(explode, transform.position,Quaternion.identity);
+        AudioSource explodeAudio = explodeObj.AddComponent<AudioSource>();
+        explodeAudio.spatialBlend = 1;
+        explodeAudio.PlayOneShot(explodeClip,2.0f);
 
         if(collision.gameObject.tag == "Tank")
         {
-            TankControllerMotor tank = collision.gameObject.GetComponent<TankControllerMotor>();
+            Tank tank = collision.gameObject.GetComponent<Tank>();
             if(tank!= null)
             {
                 float att = GetAtt();
-                tank.BeAttacked(att);
+                tank.BeAttacked(att,attackTank);
             }
         }
 
@@ -48,7 +52,7 @@ public class Bullet : MonoBehaviour
         float att = 100 - (Time.time - instantiateTime) * 40;
         if (att < 10)
             att = 10;
-        Debug.Log(att);
+       
         return att;
     }
 }

@@ -2504,6 +2504,8 @@ MonoBehaviour:
   explode: {fileID: 3108017715377789981, guid: 89be699762e51a04c80d76c0258aacda, type: 3}
   maxLifeTime: 10
   instantiateTime: 0
+  attackTank: {fileID: 0}
+  explodeClip: {fileID: 0}
 --- !u!54 &748452350
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3768,6 +3770,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bullet
       objectReference: {fileID: 0}
+    - target: {fileID: 1037054470931078182, guid: 9a324a3822dbcf847b30b5ae996f3fcb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8390337845162427955, guid: 9a324a3822dbcf847b30b5ae996f3fcb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4199,7 +4206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1386705129
 Transform:
   m_ObjectHideFlags: 0
@@ -4239,6 +4246,7 @@ MonoBehaviour:
   gun: {fileID: 761897202}
   lastShootTime: 0
   shootInterval: 0.5
+  tank: {fileID: 0}
 --- !u!114 &1386705131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4246,7 +4254,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1386705128}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 73f38b8761fc2da49a74ee56c9e71879, type: 3}
   m_Name: 
@@ -4287,6 +4295,8 @@ MonoBehaviour:
   track: {fileID: 0}
   wheels: []
   rigidbody: {fileID: 0}
+  shootAudio: {fileID: 0}
+  shootClip: {fileID: 0}
   motorAudioSource: {fileID: 0}
   motorClip: {fileID: 8300000, guid: 14149c423695d64488e139064834dd5c, type: 3}
   turretRotTarget: 0
@@ -4299,6 +4309,9 @@ MonoBehaviour:
     type: 3}
   centerSight: {fileID: 0}
   tankSight: {fileID: 0}
+  hpBarBg: {fileID: 0}
+  hpBar: {fileID: 0}
+  killUI: {fileID: 0}
 --- !u!54 &1386705132
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4795,6 +4808,81 @@ Transform:
   - {fileID: 7583283512023926909}
   m_Father: {fileID: 5006512736381090031}
   m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1576356599
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1576356602}
+  - component: {fileID: 1576356601}
+  - component: {fileID: 1576356600}
+  m_Layer: 0
+  m_Name: Terrain_(0.0, 0.0, -100.0)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!154 &1576356600
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576356599}
+  m_Material: {fileID: 0}
+  m_Enabled: 1
+  m_TerrainData: {fileID: 15600000, guid: ff0a8b62877841a459d0047955c45f4a, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &1576356601
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576356599}
+  m_Enabled: 1
+  serializedVersion: 5
+  m_TerrainData: {fileID: 15600000, guid: ff0a8b62877841a459d0047955c45f4a, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 0
+  m_DrawTreesAndFoliage: 1
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ScaleInLightmap: 0.256
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_AllowAutoConnect: 1
+--- !u!4 &1576356602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1576356599}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1581847498
 GameObject:
@@ -5963,7 +6051,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776241464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.14, z: 6.68}
+  m_LocalPosition: {x: 0, y: 1.14, z: 5.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5006512736381090031}
@@ -9446,6 +9534,8 @@ MonoBehaviour:
   track: {fileID: 0}
   wheels: []
   rigidbody: {fileID: 0}
+  shootAudio: {fileID: 0}
+  shootClip: {fileID: 8300000, guid: 41286e66560289e4da5668e1959f16da, type: 3}
   motorAudioSource: {fileID: 0}
   motorClip: {fileID: 8300000, guid: 14149c423695d64488e139064834dd5c, type: 3}
   turretRotTarget: 0
@@ -9458,6 +9548,9 @@ MonoBehaviour:
     type: 3}
   centerSight: {fileID: 2800000, guid: 092778eecb35eb1448c12972f4115a07, type: 3}
   tankSight: {fileID: 2800000, guid: d1c820f886b82ce47bbb1aa003c577a2, type: 3}
+  hpBarBg: {fileID: 2800000, guid: 9ec84fe80b4a92848bf37289d89fc7dc, type: 3}
+  hpBar: {fileID: 2800000, guid: cf055b5e3015abe459594661d318e643, type: 3}
+  killUI: {fileID: 2800000, guid: ab1949b1bd0ac964da1a9330a5dc0b47, type: 3}
 --- !u!114 &8296172668158233343
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9474,6 +9567,7 @@ MonoBehaviour:
   gun: {fileID: 2125338587}
   lastShootTime: 0
   shootInterval: 0.5
+  tank: {fileID: 0}
 --- !u!23 &8423258869807152184
 MeshRenderer:
   m_ObjectHideFlags: 0

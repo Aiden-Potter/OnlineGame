@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +10,10 @@ public enum CtrlType
     computer
 }
 
-public class TankControllerMotor : MonoBehaviour
+public class Tank : MonoBehaviour
 {
     public List<AXleInfo> axleInfos;
-
+    [Header("Control")]
     public CtrlType ctrlType = CtrlType.player;
     private float motor = 0;
     public float maxMotorTorque;
@@ -27,24 +28,33 @@ public class TankControllerMotor : MonoBehaviour
     public Transform track;
     public List<Transform> wheels;
     public Rigidbody rigidbody;
+    [Header("SoundEffect")]
+    public AudioSource shootAudio;
+    public AudioClip shootClip;
     public AudioSource motorAudioSource;
     public AudioClip motorClip;
-    [Header("旋转位置信息")]
+    [Header("旋转信息")]
     public float turretRotTarget;
     public float turretRotSpeed = 0.5f;
     public float gunRotTarget;
     public float gunRotSpeed = 0.5f;
-
+    private float maxRoll = 10.0f;
+    private float minRoll = -15.0f;
+    [Header("Battle")]
     public TankAttack tankAttack;
-
     public float hp = 100f;
     private float maxHp = 100f;
     public GameObject destoryEffect;
+
+    [Header("UI")]
     public Texture2D centerSight;
     public Texture2D tankSight;
+    public Texture2D hpBarBg;
+    public Texture2D hpBar;
+    public Texture2D killUI;
+    private float killUIStartTime = float.MinValue;
 
-    private float maxRoll = 10.0f;
-    private float minRoll = -15.0f;
+    private AITank ai;
     void Start()
     {
         turret = transform.Find("turret");
@@ -56,16 +66,26 @@ public class TankControllerMotor : MonoBehaviour
         rigidbody = gameObject.GetComponent<Rigidbody>();
         motorAudioSource = gameObject.AddComponent<AudioSource>();
         motorAudioSource.spatialBlend = 1;//播放3d的音效，范围0~·，1为3d，0为2d，混合效果
+        shootAudio = gameObject.AddComponent<AudioSource>();
+        shootAudio.spatialBlend = 1;
+
+        if(ctrlType == CtrlType.computer)
+        {
+            ai = gameObject.AddComponent<AITank>();
+            ai.tank = this;
+
+        }
     }
 
     void Update()
     {
-        if (ctrlType != CtrlType.player) return;
-        PlayerCtrl();
-        Accerlerate();
-        MotorSound();
         TurretRotation();
         GunRotation();
+        //Debug.Log(Time.time);
+
+        PlayerCtrl();
+        ComputerCtrl();
+        NoneCtrl();
     }
 
     private void OnGUI()
@@ -73,7 +93,11 @@ public class TankControllerMotor : MonoBehaviour
         if(ctrlType != CtrlType.player)
         { return; }
         DrawSight();
-        //GUI.DrawTexture(new Rect(0, 0, tankSight.width, tankSight.height), tankSight);图的锚点在左上角
+        DrawHp();
+        DrawKill();
+        //GUI.DrawTexture(new Rect(0, 0, tankSight.width, tankSight.height), tankSight);//图的锚点在左上角
+        //GUI.Label(new Rect(0, 0, 50, 50), "TextRect");
+
     }
 
     void TurretRotation()
@@ -119,11 +143,13 @@ public class TankControllerMotor : MonoBehaviour
     }
     public void PlayerCtrl()
     {
-        
 
+        if (ctrlType != CtrlType.player) return;
         if (Input.GetMouseButtonDown(0))
         {
             tankAttack.Shoot();
+            
+           // BeAttacked(30);
            
         }
 
@@ -141,6 +167,8 @@ public class TankControllerMotor : MonoBehaviour
         //turretRotTarget = Camera.main.transform.eulerAngles.y;
         //gunRotTarget = Camera.main.transform.eulerAngles.x;
         TargetSignPos();
+        Accerlerate();
+        MotorSound();
 
     }
     public void Accerlerate()
@@ -188,7 +216,7 @@ public class TankControllerMotor : MonoBehaviour
         if (track == null) return;
         float offset = 0;
         if (wheels[0] != null)
-            offset = wheels[0].localEulerAngles.x / 90.0f;
+            offset = wheels[0].localEulerAngles.x / 90.0f;//90为offset变化系数
         track.GetChild(0).GetComponent<MeshRenderer>().material.mainTextureOffset = new Vector2(0, offset);
     }
     void MotorSound()
@@ -204,7 +232,7 @@ public class TankControllerMotor : MonoBehaviour
         }
     }
 
-    public void BeAttacked(float att)
+    public void BeAttacked(float att,GameObject attackTank)
     {
         
         if (hp <= 0)
@@ -213,14 +241,31 @@ public class TankControllerMotor : MonoBehaviour
         if (hp>0)
         {
             hp -= att;
+
+            if (ai != null)
+            {
+                ai.OnAttacked(attackTank);
+            }
         }
         if (hp<=0)
         {
             GameObject destoryOgbj = GameObject.Instantiate(destoryEffect,transform);
             destoryOgbj.transform.localPosition = Vector3.zero;
             ctrlType = CtrlType.none;
+
+            if(attackTank !=null)
+            {
+                Tank tankCmp = attackTank.GetComponent<Tank>();
+                if (tankCmp != null&&tankCmp.ctrlType == CtrlType.player)
+                {
+                    tankCmp.StartDrawKillUI();
+                }
+            }
+            
         }
     }
+
+
 
     public void TargetSignPos()
     {
@@ -246,7 +291,7 @@ public class TankControllerMotor : MonoBehaviour
 
         turretRotTarget = angle.eulerAngles.y;
         gunRotTarget = angle.eulerAngles.x;
-        Debug.Log(gunRotTarget);
+        //Debug.Log(gunRotTarget);
         //Debug part
         //Transform targetCube = GameObject.Find("TargetCube").transform;
         //targetCube.position = hitPoint;
@@ -295,5 +340,62 @@ public class TankControllerMotor : MonoBehaviour
            Screen.height*1/3  - centerSight.height / 2,
            centerSight.width, centerSight.height);
         GUI.DrawTexture(centerRect, centerSight);
+    }
+
+    public void DrawHp()
+    {
+        //Background
+        Rect bgRect = new Rect(30, Screen.height - hpBarBg.height - 15, hpBarBg.width, hpBarBg.height);
+        GUI.DrawTexture(bgRect, hpBarBg);
+        //102+29<135,给血条右边留了点空间
+        float wideth = hp * 102 / maxHp;//满血102像素
+        Rect hpRect = new Rect(bgRect.x + 29, bgRect.y + 9, wideth, hpBar.height);
+        GUI.DrawTexture(hpRect, hpBar);
+        string text = Mathf.Ceil(hp).ToString() + "/" + Mathf.Ceil(maxHp).ToString();
+        Rect textRect = new Rect(bgRect.x + 80, bgRect.y - 10, 50, 50);
+        GUI.Label(textRect, text);
+
+    }
+
+    public void StartDrawKillUI()
+    {
+        killUIStartTime = Time.time;
+    }
+    public void DrawKill()
+    {
+        
+        if(Time.time - killUIStartTime<1f)
+        {
+            Rect rect = new Rect(Screen.width / 2 - killUI.width / 2, 30, killUI.width, killUI.height);
+            GUI.DrawTexture(rect, killUI);
+        }
+    }
+
+    public void ComputerCtrl()
+    {
+        if (ctrlType !=CtrlType.computer)
+        {
+            return;
+        }
+
+        Vector3 rot = ai.GetTurrentTarget();
+        turretRotTarget = rot.y;
+        gunRotTarget = rot.x;
+
+        if (ai.IsShoot())
+        {
+            tankAttack.Shoot();
+        }
+    }
+
+    public void NoneCtrl()
+    {
+        if (ctrlType !=CtrlType.none)
+        {
+            return;
+        }
+        motor = 0;
+        steering = 0;
+        brakeTorque = maxBrakeTorque / 2;
     }
 }

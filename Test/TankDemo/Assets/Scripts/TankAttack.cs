@@ -8,7 +8,11 @@ public class TankAttack : MonoBehaviour
     public Transform gun;
     public float lastShootTime = 0f;
     public float shootInterval = 0.5f;
-
+    public Tank tank;
+    public void Awake()
+    {
+        tank = GetComponent<Tank>();
+    }
     public void Shoot()
     {
         if (Time.time - lastShootTime < shootInterval) return;
@@ -16,8 +20,16 @@ public class TankAttack : MonoBehaviour
 
         Vector3 pos = gun.position + gun.forward * 5;
 
-        Instantiate(bullet, pos, gun.rotation);
+        GameObject bulletObj = Instantiate(bullet, pos, gun.rotation);
+        Bullet bulletCmp = bulletObj.GetComponent<Bullet>();
+        if(bulletCmp !=null)
+        {
+            bulletCmp.attackTank = this.gameObject;
+        }
         lastShootTime = Time.time;
+        tank.shootAudio.PlayOneShot(tank.shootClip);
+        //sound
+        
     }
 }
 

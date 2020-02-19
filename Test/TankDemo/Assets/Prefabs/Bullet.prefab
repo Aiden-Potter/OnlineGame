@@ -110,6 +110,8 @@ MonoBehaviour:
   explode: {fileID: 3108017715377789981, guid: 89be699762e51a04c80d76c0258aacda, type: 3}
   maxLifeTime: 4
   instantiateTime: 0
+  attackTank: {fileID: 0}
+  explodeClip: {fileID: 8300000, guid: 9efe421bccf410440b650fdaff46f932, type: 3}
 --- !u!54 &7718017820391324727
 Rigidbody:
   m_ObjectHideFlags: 0
