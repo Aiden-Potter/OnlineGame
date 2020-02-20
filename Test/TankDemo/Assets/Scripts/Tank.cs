@@ -79,13 +79,17 @@ public class Tank : MonoBehaviour
 
     void Update()
     {
-        TurretRotation();
-        GunRotation();
-        //Debug.Log(Time.time);
-
         PlayerCtrl();
         ComputerCtrl();
         NoneCtrl();
+
+        TurretRotation();
+        GunRotation();
+        Accerlerate();
+        MotorSound();
+        //Debug.Log(Time.time);
+
+       
     }
 
     private void OnGUI()
@@ -152,8 +156,8 @@ public class Tank : MonoBehaviour
            // BeAttacked(30);
            
         }
-
-        motor = maxMotorTorque * Input.GetAxis("Vertical");
+        float targetMotor = maxMotorTorque * Input.GetAxis("Vertical");
+        motor = Mathf.Lerp(motor,targetMotor,0.1f);
         steering = maxSteeringAngle * Input.GetAxis("Horizontal");
         brakeTorque = 0;
         foreach (var item in axleInfos)
@@ -167,8 +171,7 @@ public class Tank : MonoBehaviour
         //turretRotTarget = Camera.main.transform.eulerAngles.y;
         //gunRotTarget = Camera.main.transform.eulerAngles.x;
         TargetSignPos();
-        Accerlerate();
-        MotorSound();
+        
 
     }
     public void Accerlerate()
@@ -260,6 +263,8 @@ public class Tank : MonoBehaviour
                 {
                     tankCmp.StartDrawKillUI();
                 }
+
+                Battle.Instance.IsWin(attackTank);
             }
             
         }
@@ -386,6 +391,10 @@ public class Tank : MonoBehaviour
         {
             tankAttack.Shoot();
         }
+
+        steering = ai.GetSteering();
+        brakeTorque = ai.GetBrake();
+        motor = ai.GetMotor();
     }
 
     public void NoneCtrl()

@@ -37,7 +37,7 @@ public class CameraFollow : MonoBehaviour
         CameraMove();
     }
 
-    void SetTarget(GameObject tar)
+    public void SetTarget(GameObject tar)
     {
         if (tar != null)
             if (tar.transform.Find("cameraPoint") != null)
