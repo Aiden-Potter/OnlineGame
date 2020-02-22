@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Boom!!");
+        //Debug.Log("Boom!!");
         GameObject explodeObj = Instantiate(explode, transform.position,Quaternion.identity);
         AudioSource explodeAudio = explodeObj.AddComponent<AudioSource>();
         explodeAudio.spatialBlend = 1;

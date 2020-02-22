@@ -53,7 +53,7 @@ public class Tank : MonoBehaviour
     public Texture2D hpBar;
     public Texture2D killUI;
     private float killUIStartTime = float.MinValue;
-
+    private Vector3 screenPoint = Vector3.zero;
     private AITank ai;
     void Start()
     {
@@ -240,7 +240,7 @@ public class Tank : MonoBehaviour
         
         if (hp <= 0)
             return;//已经死亡
-        Debug.Log("damage:" + att);
+        //Debug.Log("damage:" + att);
         if (hp>0)
         {
             hp -= att;
@@ -266,7 +266,7 @@ public class Tank : MonoBehaviour
 
                 Battle.Instance.IsWin(attackTank);
             }
-            
+            //Destroy(gameObject, 10f);
         }
     }
 
@@ -336,7 +336,8 @@ public class Tank : MonoBehaviour
     {
         //实际的射击位置
         Vector3 explodePoint = CalExplodePoint();//处理Rect的锚点
-        Vector3 screenPoint = Camera.main.WorldToScreenPoint(explodePoint);
+        
+        screenPoint = Vector3.Lerp(screenPoint, Camera.main.WorldToScreenPoint(explodePoint),0.2f);
         Rect tankRect = new Rect(screenPoint.x - tankSight.width / 2,
             Screen.height - screenPoint.y - tankSight.height/2,
             tankSight.width, tankSight.height);
@@ -387,7 +388,7 @@ public class Tank : MonoBehaviour
         turretRotTarget = rot.y;
         gunRotTarget = rot.x;
 
-        if (ai.IsShoot())
+        if (ai.CanShoot())
         {
             tankAttack.Shoot();
         }

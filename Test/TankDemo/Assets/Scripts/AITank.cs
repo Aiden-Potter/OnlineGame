@@ -47,7 +47,7 @@ public class AITank : MonoBehaviour
         {
             path.NextWayPoint();
         }
-        Debug.Log(status);
+        //Debug.Log(status);
         if (status == Status.Patrol)
             PatrolUpdate();
         else if (status == Status.Attack)
@@ -174,7 +174,7 @@ public class AITank : MonoBehaviour
             {
                 target = tank.gameObject;
             }
-        }
+        } 
 
         if (target != null)
         {
@@ -208,7 +208,7 @@ public class AITank : MonoBehaviour
         }
     }
 
-    public bool IsShoot()
+    public bool CanShoot()
     {
         if (target == null)
         {
@@ -273,7 +273,7 @@ public class AITank : MonoBehaviour
         {
             return 0;
         }
-        Debug.Log(path.isFinish);
+        //Debug.Log(path.isFinish);
         if (path.isFinish)
         {
             return tank.maxBrakeTorque;

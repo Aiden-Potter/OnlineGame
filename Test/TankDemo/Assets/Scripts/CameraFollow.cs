@@ -22,7 +22,7 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         SetTarget(GameObject.Find("Tank"));
-        Cursor.lockState = CursorLockMode.Locked;
+       
     }
 
 
